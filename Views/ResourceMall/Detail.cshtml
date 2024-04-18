@@ -1,0 +1,75 @@
+﻿@model FinalBattle.Models.Course
+
+@{
+    ViewBag.Title = Model.CourceName;
+}
+
+<div class="course-detail-container">
+    <div class="course-header" style="background-image: url('@Model.CoverImageUrl');">
+        <h1 class="course-title">@Model.CourceName</h1>
+    </div>
+    <div class="course-info">
+        <p><strong>发布日期：</strong>@Model.PublishDate?.ToString("yyyy-MM-dd")</p>
+        <p><strong>课程价格：</strong>@Model.Price</p>
+        <p><strong>课程简介：</strong>@Model.Description</p>
+    </div>
+    <div class="course-videos">
+        <h2>课程视频</h2>
+        <ul>
+            @for (int i = 0; i < 10; i++)
+            {
+                <li>
+                    <a href="http://www.baidu.com" target="_blank">占位符</a>
+                </li>
+            }
+           @*  @foreach(var video in Model.Videos)
+            {
+                <li>
+                    <a href="@video.Url" target="_blank">@video.Title</a> - @video.Duration 秒
+                </li>
+            } *@
+        </ul>
+    </div>
+</div>
+
+<style>
+    .course-detail-container {
+        font-family: Arial, sans-serif;
+    }
+
+    .course-header {
+        background-size: cover;
+        background-position: center;
+        color: white;
+        text-align: center;
+        padding: 50px 0;
+    }
+
+    .course-title {
+        font-size: 36px;
+        margin: 0;
+    }
+
+    .course-info, .course-videos {
+        padding: 20px;
+    }
+
+        .course-info p {
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        .course-videos h2 {
+            margin-top: 0;
+        }
+
+        .course-videos ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .course-videos li {
+            margin-bottom: 10px;
+        }
+
+</style>

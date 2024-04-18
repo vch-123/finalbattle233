@@ -1,0 +1,187 @@
+﻿@model IEnumerable<Post>
+
+<!-- CSS 样式 -->
+<style>
+    /* 轮播图样式 */
+    .carousel-item {
+        height: 400px;
+        transition: transform 0.5s ease; /* 添加平滑过渡效果 */
+    }
+
+        .carousel-item img {
+            object-fit: cover;
+            height: 100%;
+            width: 100%;
+        }
+
+    /* 新增：确保.carousel-inner足够宽以容纳所有轮播项 */
+    .carousel-inner {
+        display: flex; /* 使得所有.carousel-item在一行显示 */
+        transition: transform 0.5s ease; /* 平滑过渡效果也适用于整个容器 */
+    }
+
+    /* 帖子分类样式 */
+    .post-categories {
+        margin-top: 20px;
+    }
+
+        .post-categories a {
+            margin-right: 10px;
+            color: #333;
+            text-decoration: none;
+        }
+
+    /* 帖子列表样式 */
+    .post-list {
+        margin-top: 20px;
+    }
+
+    .post {
+        display: flex;
+        margin-bottom: 20px;
+        border: 1px solid #ccc;
+        padding: 10px;
+    }
+
+    .post-thumbnail {
+        width: 150px;
+        height: 100px;
+        object-fit: cover;
+        margin-right: 10px;
+    }
+
+    .post-content {
+        flex: 1;
+    }
+
+        .post-content h2 {
+            margin-top: 0;
+        }
+
+        .post-content p {
+            margin-bottom: 0;
+        }
+
+    .post-meta {
+        font-style: italic;
+        color: #888;
+        margin-top: 5px;
+    }
+    .cata_hover:hover{
+        font-weight:600;
+        background:lightblue;
+    }
+
+</style>
+
+<!-- HTML 结构 -->
+<div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+    <ol class="carousel-indicators">
+        <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+        <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+        <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+        <li data-target="#carouselExampleIndicators" data-slide-to="3"></li>
+        <li data-target="#carouselExampleIndicators" data-slide-to="4"></li>
+        <li data-target="#carouselExampleIndicators" data-slide-to="5"></li>
+    </ol>
+    <div class="carousel-inner">
+        @foreach(var item in Model)
+        {
+            <div class="carousel-item active">
+            <img class="d-block w-100" src=@item.CoverImageUrl alt="Slide 1">
+            <div class="carousel-caption">
+                <h3>@item.Title</h3>
+                <p>Description 1</p>
+            </div>
+        </div>
+        }
+        
+        
+    </div>
+    <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="sr-only">Previous</span>
+    </a>
+    <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="sr-only">Next</span>
+    </a>
+</div>
+
+<div class="post-categories">
+    <a href="#" class="cata_hover">类别</a>
+    <a href="#" class="cata_hover">类别</a>
+    <a href="#" class="cata_hover">类别</a>
+    <a href="#" class="cata_hover">类别</a>
+    <a href="#" class="cata_hover">类别</a>
+    <a href="#" class="cata_hover">类别</a>
+</div>
+
+<div class="post-list">
+    @foreach (var item in Model)
+    {
+        <div class="post">
+            <img src=@item.CoverImageUrl alt="Post 1" class="post-thumbnail">
+        <div class="post-content">
+            <h2>@item.Title</h2>
+            <p>我觉得可以加一个副标题</p>
+                <a type="btn btn-success" asp-controller="Post" asp-action="Detail" asp-route-id="@item.Id" class="btn btn-sm btn-outline-secondary">详情</a>               
+                <a asp-controller="Post" asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-outline-secondary">编辑</a>
+                <a asp-controller="Post" asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-outline-secondary">删除</a>
+        </div>
+    </div>  
+    }     @* 所有的帖子 迭代显示 *@
+</div>
+
+
+
+
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const carousel = document.querySelector("#carouselExampleIndicators");
+        const carouselItems = carousel.querySelectorAll(".carousel-item");
+        const indicators = carousel.querySelectorAll(".carousel-indicators li");
+
+        let currentIndex = 0; // 当前显示的轮播项的索引
+
+        function updateCarousel(newActiveIndex) {
+            // 隐藏当前的轮播项
+            carouselItems[currentIndex].classList.remove("active");
+            indicators[currentIndex].classList.remove("active");
+
+            // 确保新索引在正确的范围内
+            if (newActiveIndex < 0) {
+                newActiveIndex = carouselItems.length - 1;
+            } else if (newActiveIndex >= carouselItems.length) {
+                newActiveIndex = 0;
+            }
+
+            // 显示新的轮播项
+            carouselItems[newActiveIndex].classList.add("active");
+            indicators[newActiveIndex].classList.add("active");
+
+            // 更新当前索引
+            currentIndex = newActiveIndex;
+        }
+
+        // 添加事件监听器以支持手动切换
+        carousel.querySelector(".carousel-control-prev").addEventListener("click", function () {
+            updateCarousel(currentIndex - 1);
+        });
+
+        carousel.querySelector(".carousel-control-next").addEventListener("click", function () {
+            updateCarousel(currentIndex + 1);
+        });
+
+        // 自动切换轮播图
+        setInterval(() => {
+            updateCarousel(currentIndex + 1);
+        }, 5000); // 每5秒切换一次
+
+        // 显示初始的轮播项
+        updateCarousel(0);
+    });
+
+</script>

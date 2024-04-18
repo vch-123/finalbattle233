@@ -1,0 +1,47 @@
+﻿@model IEnumerable<FinalBattle.Models.Canvas>
+
+<h2>画廊</h2><br/>
+
+<table>
+    <tr>
+        <th>画作名称&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+        <th>作者&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+        <th>啊呜呜呜</th> <!-- 添加一个用于显示图像的列 -->
+    </tr>
+    @foreach (var canvas in Model)
+    {
+        <tr>
+            <td>@canvas.Title&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+            <td>@canvas.UserId&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td> <!-- 假设你有一个描述字段 -->
+            <td>
+                @{
+                    // 将byte[]数据转换为Base64字符串
+                    var base64 = Convert.ToBase64String(canvas.Data);
+                    // 根据你的图像类型确定正确的MIME类型，这里假设是PNG
+                    var imgSrc = String.Format("data:image/png;base64,{0}", base64);
+                }
+                <img src="@imgSrc" width="300" height="100" /> <!-- 显示图像，并设置合适的尺寸 -->
+            </td>
+        </tr>
+    }
+</table>
+<br/>
+<button onclick="location.href='@Url.Action("Create")'">立刻开始创作</button>
+
+<style>
+    button {
+        background-color: #4CAF50; /* 绿色 */
+        color: white;
+        padding: 14px 20px;
+        margin: 8px 0;
+        border: none;
+        cursor: pointer;
+        width: 100%;
+    }
+
+        button:hover {
+            opacity: 0.8;
+        }
+</style>
+
+

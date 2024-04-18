@@ -1,0 +1,144 @@
+﻿@* @using System.Security.Claims
+@using FinalBattle.Models
+@model User *@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - FinalBattle</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/FinalBattle.styles.css" asp-append-version="true" />
+    <style>
+        .nav-item {
+            width:90px;
+            margin-left: 14px;
+            margin-right: 14px;
+        }
+
+        .nav-item:hover{
+            
+            background:pink;
+        }
+
+        .navttt{
+            margin-right:25px;
+           font-size:24px;
+           font-weight:600;
+            text-decoration:none;
+        }
+        .nav-link{
+            text-align:center;
+            font-size:17px;
+            font-weight:380;
+        }
+        .nav-link:hover{
+            font-weight:600;
+            
+        }
+        .text-dark:hover{
+            color:aquamarine;
+        }
+
+        
+    </style>
+</head>
+
+<body>
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-light border-bottom box-shadow mb-3" style="color: black; background-color: white;">
+            <div class="container-fluid">
+                <a class="navttt" asp-area="" asp-controller="Home" asp-action="Index" style="color: black;">FinalBattle</a>
+
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between nav-dark text-dark">
+                    <ul class="navbar-nav flex-grow-1">
+                        @* <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">主页</a>
+                        </li> *@
+
+                        @* @if (User.Identity.IsAuthenticated)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Index">Runners</a>
+                            </li>
+
+                        } *@
+
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Post" asp-action="Index">社区</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="ResourceMall" asp-action="Index">资源商城</a>
+                        </li>
+                        
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Dashboard" asp-action="Index">个人中心</a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Index">所有用户</a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Email" asp-action="SendEmail">邮件📧</a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Canvas" asp-action="Index">创作🖊</a>
+                            </li>
+
+                            <li class="nav-item">
+                                <form asp-area="" asp-controller="Account" asp-action="Logout">
+                                    <button class="btn btn-outline-danger" style="align-content:center;text-align:center;margin-left:20px;">登出</button>
+                                </form>
+                            </li>
+
+                            
+
+                            <li class="nav-item" style="margin-left:600px">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="UserCenter">
+                                    @* <img src="@Model.UserImageUrl" alt="User Avatar" /> *@
+                                </a>
+                            </li>
+
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Login">登录</a>
+                            </li>                           
+                        }
+                        
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+   @*  <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; 2024 - RunGroupWebApp - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        </div>
+    </footer> *@
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
+
+

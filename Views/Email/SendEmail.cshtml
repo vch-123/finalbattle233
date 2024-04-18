@@ -1,0 +1,62 @@
+﻿@model FinalBattle.ViewModels.SendEmailViewModel
+<style>
+    form div {
+        margin-bottom: 10px;
+    }
+
+    form label {
+        display: block;
+        margin-bottom: 5px;
+    }
+
+    form input[type="text"],
+    form input[type="email"],
+    form input[type="file"],
+    form textarea {
+        width: 100%;
+        padding: 8px;
+        margin-top: 2px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box; /* 保证padding不会增加元素的总宽度 */
+    }
+
+    form button[type="submit"] {
+        width: 100%;
+        background-color: #4CAF50;
+        color: white;
+        padding: 10px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        margin-top: 10px;
+    }
+
+        form button[type="submit"]:hover {
+            background-color: #45a049;
+        }
+</style>
+
+<form asp-action="SendEmail" method="post" enctype="multipart/form-data">
+    <div>
+        <label>发送者</label>
+        <input type="text" asp-for="Sender" />
+    </div>
+    <div>
+        <label>接收者</label>
+        <input type="text" asp-for="Receiver" />
+    </div>
+    <div>
+        <label>主题</label>
+        <input type="text" asp-for="Subject" />
+    </div>
+    <div>
+        <label>正文</label>
+        <textarea asp-for="Message"></textarea>
+    </div>
+    <div>
+        <label>附件</label>
+        <input type="file" asp-for="Attachments" multiple />
+    </div>
+    <button type="submit">点击发送</button>
+</form>

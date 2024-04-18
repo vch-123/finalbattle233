@@ -1,0 +1,33 @@
+﻿
+@using FinalBattle.Data.Enum
+@using FinalBattle.ViewModels
+@model EditPostViewModel
+
+<form method="post" asp-action="Edit" enctype="multipart/form-data">
+    
+    <div class="form-group">
+        <label asp-for="Title">Title</label>
+        <input asp-for="Title" class="form-control" placeholder="Title">
+        <span asp-validation-for="Title" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Body">Body</label>
+        <input asp-for="Body" class="form-control" placeholder="Body">
+        <span asp-validation-for="Body" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="PostCategory">PostCategory</label>
+        <select asp-for="PostCategory" asp-items="@Html.GetEnumSelectList<PostCategory>()" class="form-control">
+            <option selected="selected" value="">--Select--</option>
+        </select>
+        <span asp-validation-for="PostCategory" class="text-danger"></span>
+    </div>
+    
+    <div class="form-group">
+        <label asp-for="Image">Image</label>
+        <input asp-for="Image" type="file" class="form-control" placeholder="Image">
+        <span asp-validation-for="Image" class="text-danger"></span>
+
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>

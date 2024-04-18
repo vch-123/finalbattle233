@@ -1,0 +1,350 @@
+﻿
+@using FinalBattle.Models
+@model Post
+
+<style>
+    body, html {
+        margin: 0;
+        padding: 0;
+        font-family: Arial, sans-serif;
+    }
+
+    .container {
+        display: flex;
+        margin: 20px;
+    }
+
+    .post {
+        width: calc(100% - 240px); /* 调整帖子宽度以预留用户卡片空间 */
+        padding-right: 20px; /* 添加右侧内边距以避免内容与用户卡片重叠 */
+    }
+
+    .post-title {
+        color: #333;
+        font-size: 24px;
+    }
+
+    .post-category {
+        background-color: #007bff;
+        color: #fff;
+        display: inline-block;
+        padding: 5px 10px;
+        border-radius: 5px;
+        margin: 10px 0;
+    }
+
+    .post-body {
+        margin-top: 20px;
+        text-align: justify;
+    }
+
+    .user-card {
+        position: absolute; /* 固定位置 */
+        top: 85px; /* 与顶部的距离 */
+        right: 30px; /* 与右侧的距离 */
+        width: 200px;
+        padding: 20px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        border-radius: 5px;
+        background-color: #fff; /* 确保背景色 */
+    }
+
+    .user-avatar {
+        width: 100%;
+        border-radius: 50%;
+        margin-bottom: 20px;
+    }
+
+    .user-info div {
+        text-align:center;
+        margin-bottom: 10px;
+    }
+
+    .follow-btn {
+        width: 100%;
+        padding: 10px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+        .follow-btn:hover {
+            background-color: #0056b3;
+        }
+
+
+    /* 已有的样式 */
+    .container {
+        display: flex;
+        flex-direction: column;
+        margin: 20px;
+    }
+
+    .post {      
+        border-bottom: 2px solid #eee; /* 为帖子和评论区添加底部边界线 */
+        margin-bottom: 20px;
+        padding-bottom: 20px;
+    }
+
+    .comments-section {
+
+        margin-top:300px;
+        border-bottom: 2px solid #eee; /* 为帖子和评论区添加底部边界线 */
+        margin-bottom: 20px;
+        padding-bottom: 20px;
+    }
+
+    .comment {
+        display: flex;
+        align-items: flex-start;
+        margin-bottom: 15px;
+    }
+
+    .comment-avatar {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        margin-right: 10px;
+    }
+
+    .comment-body {
+        flex: 1;
+    }
+
+    .comment-actions {
+        margin-right:100px;
+        display: flex;
+        align-items: center;
+    }
+
+    .action-button {
+        margin: 0 8px;
+        cursor: pointer;
+    }
+
+    .comment-box {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        padding: 10px;
+        background-color: #f8f9fa;
+        border-top: 2px solid #eee;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    /* 子评论样式 */
+    .sub-comments {
+        margin-left: 20px; /* 缩进表示层级 */
+        border-left: 2px solid #ccc; /* 左边框表示层级 */
+        padding-left: 10px;
+    }
+
+    /* 隐藏元素的样式 */
+    .hidden {
+        display: none;
+    }
+
+    /* 子评论的输入框样式 */
+    .sub-comment-input {
+        width: calc(100% - 20px);
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
+
+
+    .comment-input {
+        flex: 1;
+        margin-right: 10px;
+    }
+
+    .send-btn {
+        padding: 10px 20px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    /* 控制评论条的显示和隐藏 */
+    .comment-box.hidden {
+        bottom: -100%; /* 完全隐藏评论条 */
+    }
+
+    .close-btn{
+        position: fixed; /* 固定位置 */
+        top: 575px; /* 与顶部的距离 */
+        right: 10px; /* 与右侧的距离 */
+        width: 60px;
+        padding: 20px;
+        box-shadow: 0 0 100px rgba(0,0,0,0.1);
+        border-radius: 5px;
+        background-color: #638; /* 确保背景色 */
+        color:aquamarine;
+
+    }
+</style>
+
+<title>@Model.Title</title>
+
+
+<div class="container">
+        <div class="post">
+            <h1 class="post-title">@Model.Title</h1>
+            <div class="post-category">@Model.PostCategory ?? "我是狗"</div>
+            <div class="post-body">@Model.Body </div>
+        </div>
+
+        <!-- 评论区 -->
+        <div class="comments-section">
+
+            <div class="comment">
+                <img src="~/imgs/1.png" alt="评论者头像" class="comment-avatar">
+                <div class="comment-body">
+                    这是一条评论的内容。
+                    <!-- 子评论容器，初始时隐藏 -->
+                    <div class="sub-comments hidden">
+                        <!-- 子评论将添加在这里 -->
+                    </div>
+                </div>
+                <div class="comment-actions">
+                    <span class="action-button">👍</span>
+                    <span class="action-button">👎</span>
+                    <span class="action-button reply-btn">💬</span> <!-- 添加回复按钮 -->
+                </div>
+            </div>
+            <div class="comment">
+                <img src="~/imgs/1.png" alt="评论者头像" class="comment-avatar">
+                <div class="comment-body">
+                    这是一条评论的内容。
+                    <!-- 子评论容器，初始时隐藏 -->
+                    <div class="sub-comments hidden">
+                        <!-- 子评论将添加在这里 -->
+                    </div>
+                </div>
+                <div class="comment-actions">
+                    <span class="action-button">👍</span>
+                    <span class="action-button">👎</span>
+                    <span class="action-button reply-btn">💬</span> <!-- 添加回复按钮 -->
+                </div>
+            </div>
+            <div class="comment">
+                <img src="~/imgs/1.png" alt="评论者头像" class="comment-avatar">
+                <div class="comment-body">
+                    这是一条评论的内容。
+                    <!-- 子评论容器，初始时隐藏 -->
+                    <div class="sub-comments hidden">
+                        <!-- 子评论将添加在这里 -->
+                    </div>
+                </div>
+                <div class="comment-actions">
+                    <span class="action-button">👍</span>
+                    <span class="action-button">👎</span>
+                    <span class="action-button reply-btn">💬</span> <!-- 添加回复按钮 -->
+                </div>
+            </div>
+           
+            <!-- 更多评论 -->
+        </div>
+        <div class="comment-box" id="comment-box">
+            <input type="text" class="comment-input" placeholder="添加评论...">
+            <button class="send-btn">发送</button>          
+        </div>
+        <button class="close-btn">隐藏</button> <!-- 添加关闭按钮 -->
+
+        <div class="user-card">
+            <img src=~/imgs/4.png alt="用户头像" class="user-avatar">
+            <div class="user-info">
+                <div>帖子数：42</div>
+                <div>点赞数：256</div>
+            </div>
+            <button class="follow-btn">关注</button>
+        </div>
+    </div>
+
+
+
+ <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const commentBox = document.getElementById('comment-box');
+        const commentInput = document.querySelector('.comment-input');
+        const toggleButton = document.querySelector('.close-btn'); // 控制评论框显示和隐藏的按钮
+
+        // 控制评论框的显示和隐藏
+        commentInput.addEventListener('focus', function () {
+            if (commentBox.classList.contains('hidden')) {
+                commentBox.classList.remove('hidden');
+                toggleButton.textContent = '隐藏'; // 更新按钮文本为“隐藏”
+            }
+        });
+
+        toggleButton.addEventListener('click', function () {
+            if (commentBox.classList.contains('hidden')) {
+                commentBox.classList.remove('hidden');
+                toggleButton.textContent = '隐藏'; // 更新按钮文本为“隐藏”
+            } else {
+                commentBox.classList.add('hidden');
+                toggleButton.textContent = '显示'; // 更新按钮文本为“显示”
+            }
+        });
+
+        commentInput.addEventListener('blur', function (event) {
+            // 防止点击切换按钮时评论框意外关闭
+            if (event.relatedTarget && event.relatedTarget.className.includes('close-btn')) {
+                event.preventDefault();
+            } else if (!commentInput.value.trim() && !commentBox.classList.contains('hidden')) {
+                commentBox.classList.add('hidden');
+                toggleButton.textContent = '显示'; // 更新按钮文本为“显示”
+            }
+        });
+
+        document.querySelector('.send-btn').addEventListener('click', function () {
+            if (commentInput.value.trim()) {
+                console.log('Sending comment:', commentInput.value); // 发送评论的逻辑
+                commentInput.value = ''; // 清空输入框
+                commentBox.classList.add('hidden'); // 发送后隐藏评论框
+                toggleButton.textContent = '显示'; // 更新按钮文本为“显示”
+            }
+        });
+
+        // 添加点击回复按钮的逻辑
+        document.querySelectorAll('.reply-btn').forEach(button => {
+            button.addEventListener('click', function () {
+                let parentComment = this.closest('.comment');
+                let subCommentsContainer = parentComment.querySelector('.sub-comments');
+
+                // 仅在首次点击时创建输入框和发送按钮
+                if (!subCommentsContainer.querySelector('.comment-input')) {
+                    // 创建子评论的输入框
+                    let input = document.createElement('input');
+                    input.className = 'comment-input sub-comment-input';
+                    input.placeholder = '添加回复...';
+                    subCommentsContainer.appendChild(input);
+
+                    // 创建发送按钮
+                    let sendButton = document.createElement('button');
+                    sendButton.className = 'send-btn';
+                    sendButton.textContent = '回复';
+                    subCommentsContainer.appendChild(sendButton);
+
+                    // 发送子评论的逻辑
+                    sendButton.addEventListener('click', function () {
+                        if (input.value.trim()) {
+                            console.log('Sending sub-comment:', input.value); // 处理子评论的添加逻辑
+                            input.value = ''; // 清空输入框
+                        }
+                    });
+                }
+
+                // 切换子评论容器的显示和隐藏
+                subCommentsContainer.classList.toggle('hidden');
+            });
+        });
+    });
+
+ </script>

@@ -1,0 +1,54 @@
+﻿@model FinalBattle.ViewModels.CreateCanvasViewModel
+
+@{
+    ViewData["Title"] = "Create Canvas";
+}
+
+<h2>开始创作！</h2><br/>
+
+<form asp-action="Create" method="post" enctype="multipart/form-data">
+    <input type="hidden" id="UserId" name="UserId" asp-for="UserId" />
+    <div class="form-group">
+        <label asp-for="Title" class="control-label">作品名</label>
+        <input asp-for="Title" class="form-control" width="1200" />
+        <span asp-validation-for="Title" class="text-danger"></span>
+    </div>
+
+    <!-- Canvas Drawing Area -->
+    <br/>
+    <div>
+        <canvas id="drawingCanvas" width="1200" height="400" style="border:1px solid #000;"></canvas>
+    </div><br/>
+    <button type="button" class="btn btn-primary" id="saveDrawing">保存图像</button><br /><br />
+
+    <!-- Hidden Input for Drawing Data -->
+    <input type="hidden" asp-for="Data" />
+
+    <div class="form-group">
+        <input type="submit" value="提交创作" class="btn btn-primary" />
+    </div>
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <!-- Include fabric.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/4.5.0/fabric.min.js"></script>
+    <script>
+        var canvas = new fabric.Canvas('drawingCanvas');
+        canvas.isDrawingMode = true;
+        canvas.freeDrawingBrush.width = 5;
+        canvas.freeDrawingBrush.color = "#000000";
+
+        
+
+        document.getElementById('saveDrawing').addEventListener('click', function () {
+            var dataURL = canvas.toDataURL();
+            // 移除前缀以获取纯Base64字符串
+            var base64Data = dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
+            document.getElementById('@Html.IdFor(model => model.Data)').value = base64Data;
+        });
+    </script>
+}
